@@ -1,0 +1,36 @@
+<!-- Open this file in a browser, right-click each canvas, and "Save Image As" icon-192.png and icon-512.png -->
+<canvas id="c192" width="192" height="192"></canvas>
+<canvas id="c512" width="512" height="512"></canvas>
+<script>
+function drawIcon(canvas, size) {
+  const ctx = canvas.getContext('2d');
+  // Background
+  ctx.fillStyle = '#FDFAF6';
+  ctx.beginPath();
+  ctx.roundRect(0, 0, size, size, size * 0.2);
+  ctx.fill();
+  // Gradient circle
+  const grad = ctx.createLinearGradient(size*0.2, size*0.2, size*0.8, size*0.8);
+  grad.addColorStop(0, '#C4725A');
+  grad.addColorStop(1, '#6B9E7D');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.arc(size/2, size*0.42, size*0.22, 0, Math.PI*2);
+  ctx.fill();
+  // Leaf/sprout
+  ctx.strokeStyle = '#6B9E7D';
+  ctx.lineWidth = size * 0.025;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(size/2, size*0.32);
+  ctx.quadraticCurveTo(size*0.55, size*0.18, size*0.6, size*0.22);
+  ctx.stroke();
+  // Text
+  ctx.fillStyle = '#C4725A';
+  ctx.font = `700 ${size*0.18}px Lora, Georgia, serif`;
+  ctx.textAlign = 'center';
+  ctx.fillText('bloom.', size/2, size*0.78);
+}
+drawIcon(document.getElementById('c192'), 192);
+drawIcon(document.getElementById('c512'), 512);
+</script>

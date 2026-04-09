@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#C4725A" />
+    <meta name="description" content="mommy mode. — a single mom's command center. Meal plans, budget tracking, interactive learning, and more." />
+    
+    <!-- iOS PWA Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="mommy mode." />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/icon-192.png" />
+    
+    <!-- Splash screens for iPhone (optional but polished) -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    
+    <!-- Preconnect to Google Fonts for speed -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Nunito+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    
+    <title>mommy mode.</title>
+    
+    <style>
+      /* Prevent overscroll bounce on iOS */
+      html, body {
+        overscroll-behavior: none;
+        -webkit-overflow-scrolling: touch;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #FDFAF6;
+        font-family: 'Nunito Sans', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      /* Safe area padding for notched iPhones */
+      #root {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>You need JavaScript to run mommy mode.</noscript>
+    <div id="root"></div>
+  </body>
+</html>
