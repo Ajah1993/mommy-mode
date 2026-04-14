@@ -460,9 +460,12 @@ export default function BloomApp() {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const storedToken = localStorage.getItem("bloom_token");
+        const storedToken = localStorage.getItem("mm_token");
+        const storedUserId = localStorage.getItem("mm_user_id");
+        console.log("[bloom] checkSession — mm_token:", storedToken ? "present" : "missing", "| mm_user_id:", storedUserId || "missing");
         if (storedToken) {
           const user = await sb.auth.getUser(storedToken);
+          console.log("[bloom] getUser result:", user);
           if (user && user.id) {
             _sbToken = storedToken;
             setAuthUser(user);
@@ -471,10 +474,12 @@ export default function BloomApp() {
             await loadAllData(user.id);
             setLoading(false);
           } else {
-            localStorage.removeItem("bloom_token");
+            console.warn("[bloom] Stored token invalid — clearing localStorage");
+            localStorage.removeItem("mm_token");
+            localStorage.removeItem("mm_user_id");
           }
         }
-      } catch {}
+      } catch (e) { console.error("[bloom] checkSession error:", e); }
       setAuthInitializing(false);
     };
     checkSession();
@@ -619,13 +624,17 @@ export default function BloomApp() {
     setAuthError("");
     setAuthLoading(true);
     const res = await sb.auth.login(authForm.email, authForm.password);
+    console.log("[bloom] login response:", res);
     if (res.error || !res.access_token) {
+      console.warn("[bloom] login failed — error:", res.error, "| has access_token:", !!res.access_token);
       setAuthError(res.error?.message || res.error?.error_description || "Invalid email or password. Please try again.");
       setAuthLoading(false);
       return;
     }
     _sbToken = res.access_token;
-    localStorage.setItem("bloom_token", res.access_token);
+    localStorage.setItem("mm_token", res.access_token);
+    localStorage.setItem("mm_user_id", res.user.id);
+    console.log("[bloom] login success — mm_token and mm_user_id saved. user id:", res.user.id);
     setAuthUser(res.user);
     setProfileId(res.user.id);
     setLoading(true);
@@ -640,14 +649,18 @@ export default function BloomApp() {
     setAuthError("");
     setAuthLoading(true);
     const res = await sb.auth.signup(authForm.email, authForm.password, authForm.displayName);
+    console.log("[bloom] signup response:", res);
     if (res.error) {
+      console.warn("[bloom] signup failed — error:", res.error);
       setAuthError(res.error?.message || "Signup failed. Please try again.");
       setAuthLoading(false);
       return;
     }
     if (res.access_token) {
       _sbToken = res.access_token;
-      localStorage.setItem("bloom_token", res.access_token);
+      localStorage.setItem("mm_token", res.access_token);
+      localStorage.setItem("mm_user_id", res.user.id);
+      console.log("[bloom] signup success — mm_token and mm_user_id saved. user id:", res.user.id);
       setAuthUser(res.user);
       setProfileId(res.user.id);
       setLoading(true);
@@ -686,7 +699,8 @@ export default function BloomApp() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("bloom_token");
+    localStorage.removeItem("mm_token");
+    localStorage.removeItem("mm_user_id");
     _sbToken = null;
     setAuthUser(null);
     setProfileId(null);
